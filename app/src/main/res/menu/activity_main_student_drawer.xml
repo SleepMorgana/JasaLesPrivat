@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/nav_search_tutors"
+        android:icon="@android:drawable/ic_search_category_default"
+        android:title="@string/search_tutors_text" />
+
+    <item
+        android:id="@+id/nav_filter_search"
+        android:icon="@drawable/ic_filter_list"
+        android:title="@string/filter" />
+
+</menu>

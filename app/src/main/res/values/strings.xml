@@ -1,0 +1,103 @@
+<resources>
+    <string name="app_name" translatable="false">Pencari Jasa Les Privat</string>
+    <string name="title_activity_sign_in_sign_up">SignInSignUp</string>
+    <string name="title_activity_main">Home</string>
+    <string name="title_admin_activity_main">Admin Console</string>
+    <string name="action_settings">Settings</string>
+    <string name="alt_app_logo">App logo made of a magnifier and a graduate hat</string>
+    <string name="username_txt" translatable="false">Username</string>
+    <string name="password_txt" translatable="false">Password</string>
+    <string name="passwd_hint5">Minimum 6 Characters</string>
+    <string name="sign_in_txt">Login</string>
+    <string name="forgotten_password_txt">Forgotten password?</string>
+    <string name="email_txt">Email</string>
+    <string name="confirm_password_txt">Confirm password</string>
+    <string name="role_txt">I want to register as a</string>
+    <string name="student_role_txt">Student</string>
+    <string name="tutor_role_txt">Tutor</string>
+    <string name="sign_up_txt">Sign Up</string>
+    <string name="your_username_txt">Your username</string>
+    <string name="email_address_txt">Email address</string>
+    <string name="choose_username_txt">Choose a username</string>
+    <string name="reset_psswd_instructions_txt">Enter the email address associated with your account to receive a password reset email:</string>
+    <string name="reset_psswd_button_txt">Send reset email</string>
+    <string name="title_activity_main2" translatable="false">Main2Activity</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="nav_header_title" translatable="false">Android Studio</string>
+    <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
+    <string name="nav_header_desc" translatable="false">Navigation header</string>
+    <string name="placeholder" translatable="false">…</string>
+    <string name="accept_action">Accept</string>
+    <string name="decline_action">Decline</string>
+    <string name="tutor_admin_page">Tutors</string>
+    <string name="subject_admin_page">Subjects</string>
+    <string name="edit_pen_button_description">Edit profile picture button</string>
+    <string name="log_out_text">Sign out</string>
+    <string name="search_tutors_text">Search Tutors</string>
+    <string name="or_text">OR</string>
+    <string name="search_tutors_option1_txt">Search based on your learning needs:</string>
+    <string name="search_tutors_option2_txt">Search based on selected subjects:</string>
+    <string name="learning_needs_txt">What are your learning needs?</string>
+    <string name="tutoring_subject_choice_txt">What subjects do you wish to tutor?</string>
+    <string name="my_learning_needs_txt">My learning needs:</string>
+    <string name="subjects_taught_txt">The subjects I can teach:</string>
+    <string name="no_subjects_specified">You do not have specified any subjects yet. Please edit your profile to add subjects</string>
+    <string name="search_txt">Search</string>
+    <string name="subject_panel">Subject panel</string>
+    <string name="subject_name">Subject\'s name</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="sign_out_txt">Sign Out</string>
+    <string name="create_session_subject">The subject you are interested in</string>
+    <string name="send_request">Send request</string>
+    <string name="pick_subject">Pick a subject</string>
+    <string name="time_label">Time</string>
+    <string name="requested_subject">REQUESTED SUBJECT:</string>
+    <string name="meeting_invitation_label">MEETING INVITATION:</string>
+    <string name="meeting_schedule_label">MEETING SCHEDULE:</string>
+    <string name="matched_subjects_txt">Matched subjects:</string>
+    <string name="instructions_match1">No tutors match your search criteria</string>
+    <string name="instructions_match2">Click on a tutor in the list below to see further details</string>
+    <string name="subjects_tutored_txt">Subjects that can be tutored:</string>
+    <string name="chat_txt" translatable="false">Chat</string>
+    <string name="request_a_session_txt">Request a session</string>
+    <string name="my_conversations_txt">My conversations</string>
+    <string name="requested_sessions_txt">Requested sessions</string>
+    <string name="date_txt">Date</string>
+    <string name="no_upcoming_sessions_txt">You have no upcoming sessions</string>
+    <string name="upcoming_sessions_txt">Dates of your next upcoming sessions (up to five):</string>
+    <string name="send">Send</string>
+    <string name="select_request_label">Select session request to view its details</string>
+    <string name="conversation_list_label">Select a user to start a conversation</string>
+    <string name="selected_tutor_txt">Selected tutor:</string>
+
+    <!--String untuk kalendar-->
+    <string name="action_today">Today</string>
+    <string name="action_day_view">Day view</string>
+    <string name="action_three_day_view">3 day view</string>
+    <string name="action_week_view">Week view</string>
+    <string name="title_activity_basic">Basic Example</string>
+    <string name="title_activity_asynchronous">Asynchronous Events</string>
+    <string name="async_error">Could not download events from the internet</string>
+
+    <!--String untuk pilih pelajaran-->
+    <string name="pilih_tingkat_pendidikan">Choose Education Level</string>
+
+    <!--String untuk tombol filter-->
+    <string name="filter">Filter Search</string>
+
+    <!--String untuk tombol cek jadwal-->
+    <string name="schedule">Check Schedule</string>
+
+    <!--String untuk chat-->
+    <string name="collection_chat_messages">Chat Messages</string>
+
+    <string name="action_edit_event">Edit Event</string>
+
+    <string name="app_add_event_activity">Add Event</string>
+
+
+
+
+</resources>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "411379246292",
+    "firebase_url": "https://jasalesprivat-ec9ea.firebaseio.com",
+    "project_id": "jasalesprivat-ec9ea",
+    "storage_bucket": "jasalesprivat-ec9ea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:411379246292:android:000adeabd3b4959c",
+        "android_client_info": {
+          "package_name": "developer.aulia.jasalesprivat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "411379246292-rodevdhf5nu4p63sgd7v18vpgmj2afb0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "developer.aulia.jasalesprivat",
+            "certificate_hash": "45e7eb2890e4ad9194f4e7a9b0e0fa1788a6e83d"
+          }
+        },
+        {
+          "client_id": "411379246292-cqgt2e6vcbv36rvf231t8cokvifiatke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAihbhKpdu-y97x7T7wrLCVWJER2lhep3U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "411379246292-cqgt2e6vcbv36rvf231t8cokvifiatke.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
