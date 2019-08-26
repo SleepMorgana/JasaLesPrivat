@@ -1,10 +1,13 @@
 package developer.aulia.jasalesprivat;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -55,27 +58,27 @@ public class RequestSessionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_session);//Gunakan konten dari layout activity_create_session.xml
-        //Enable the Up button
+        //Aktifkan tombol action bar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);//Mencari Toolbar pada activity_create_session.xml
         setSupportActionBar(toolbar);//Berikan Support Action Bar pada toolbar
-        ActionBar ab = getSupportActionBar(); // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar(); // Mendapatkan support ActionBar pada toolbar ini
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setDisplayShowHomeEnabled(true);
         }
 
-        //Selected tutor user, probably through intent element, Telah memilih pengguna Tutor melalui element intent
+        //Digunakan untuk memilih pengguna Tutor melalui element intent
         Intent intent = getIntent(); //Mendapatkan Intent
         tutor = intent.getParcelableExtra(mTutorFlag); //Mendapatkan data tambahan Tutor
 
-        //Render the tutor's identity (i.e. username in this activity), Berikan identitas Tutor (yaitu username di aktivitas ini)
+        //Berikan identitas Tutor (yaitu username di aktivitas ini)
         TextView text_view = findViewById(R.id.username_profile_id);
         text_view.setText(tutor.getUsername());
         String name = text_view.getText().toString();
 
 
 
-        //Dates ListView
+        //Dates ListView, digunakan untuk membuat spinner dari subjek tutor yang tersedia
         ListView listView = (ListView) findViewById(R.id.session_date_listview);
         final ArrayAdapter<String> dateAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,new ArrayList<String>());
         listView.setAdapter(dateAdapter);
@@ -103,9 +106,9 @@ public class RequestSessionActivity extends AppCompatActivity {
             }
         });
 
-        //date view
+        //mengimplementasikan fitur date view
         final CalendarPickerView calendarView = (CalendarPickerView ) findViewById(R.id.calendar_view);
-        //getting current
+        //mendapatkan data dari tanggal yang sudah dipilih
         Calendar nextYear = Calendar.getInstance();
         nextYear.add(Calendar.YEAR, 1);
         Date today = new Date();
@@ -115,13 +118,13 @@ public class RequestSessionActivity extends AppCompatActivity {
         calendarView.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
             @Override
             public void onDateSelected(final Date date) {
-                //create dialog
+                //menambahkan dialog
 
                 final EditText editText = new EditText(mContext);
 
                 
 
-                //final String regexp = "([01]?[0-9]|2[0-3]):[0-5][0-9]"; //your regexp here
+                
 
 
 
@@ -137,15 +140,17 @@ public class RequestSessionActivity extends AppCompatActivity {
 
 
 
+
+
                                 Date time = null;
                                 try {
-                                    time = sdf.parse(timeString);//adding seconds
+                                    time = sdf.parse(timeString);//menambahkan seconds
                                 } catch (ParseException e) {
-                                    Util.printToast(getApplicationContext(),"Invalid time", Toast.LENGTH_SHORT);
+                                    Util.printToast(getApplicationContext(),"Waktu tidak valid", Toast.LENGTH_SHORT);
                                     return;
                                 }
 
-                                //create timestamp
+                                //buat timestamp
                                 Calendar dayCalendar = GregorianCalendar.getInstance();
                                 dayCalendar.setTime(date); //menetapkan kalender pada tanggal yang ditentukan
 
@@ -157,7 +162,7 @@ public class RequestSessionActivity extends AppCompatActivity {
                                         dayCalendar.get(Calendar.MONTH),dayCalendar.get(Calendar.DAY_OF_MONTH),
                                         timeCalendar.get(Calendar.HOUR_OF_DAY),timeCalendar.get(Calendar.MINUTE));
 
-                                // assigns calendar to given date
+                                // menetapkan kalender untuk tanggal tertentu
 
                                 selectedDates.put(dayCalendar.getTime().toString(),finalDay.getTimeInMillis()+"");
                                 dateAdapter.add(finalDay.getTime().toString());
@@ -186,17 +191,15 @@ public class RequestSessionActivity extends AppCompatActivity {
             }
         });
 
-        //Time box;
-        //final EditText timebox = (EditText) findViewById(R.id.time_edit_text);
 
         Button button = (Button) findViewById(R.id.request_session_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //create session instance
+                //membuat session (jadwal les) instance
 
                 if (selectedSubject[0].equals("")){
-                    Util.printToast(getApplicationContext(),"Please select subject", Toast.LENGTH_SHORT);
+                    Util.printToast(getApplicationContext(),"Harap pilih pelajaran untuk kegiatan les privat anda", Toast.LENGTH_SHORT);
                     return;
                 }
                 Session session = new Session(selectedSubject[0],UserManager.getUserInstance().getUser().getId(),
@@ -206,22 +209,22 @@ public class RequestSessionActivity extends AppCompatActivity {
                     Util.printToast(getApplicationContext(),"Invalid day", Toast.LENGTH_SHORT);
                     return;
                 }
-                //Adding timestamps to session
+                //Menambahkan timestamps ke session (jadwal les)
                 for (Map.Entry<String,String> day : selectedDates.entrySet()){
                     session.addDate(day.getValue());
                 }
 
-                //save Session
+                //Menyimpan Session
                 UserManager.createSession(session, new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Util.printToast(mContext,"A new session was scheduled!", Toast.LENGTH_SHORT);
+                        Util.printToast(mContext,"Jadwal les berhasil ditambahkan, tunggu respon dari tutor", Toast.LENGTH_SHORT);
                         finish();
                     }
                 }, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Util.printToast(mContext,"There were issues scheduling the session", Toast.LENGTH_SHORT);
+                        Util.printToast(mContext,"Adanya masalah ketika membuat jadwal les", Toast.LENGTH_SHORT);
                     }
                 });
             }
@@ -232,12 +235,22 @@ public class RequestSessionActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
+            // Melakukan respon ke action bar
             case android.R.id.home:
-                finish(); // close this activity and return to preview activity (if there is any)
+                finish(); // menutup activity dan kembali ke activity sebelumnya (jika ada)
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    /*private void requestNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_logo_app)
+                .setContentTitle("Pencari Jasa Les Privat")
+                .setContentText("Sukses membuat jadwal les terbaru. Mohon menunggu respon dari pengajar");
+
+        NotificationManager buatLes = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        buatLes.notify(0, builder.build());
+    }*/
 }

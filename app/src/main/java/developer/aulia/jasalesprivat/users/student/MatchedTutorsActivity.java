@@ -42,7 +42,7 @@ public class MatchedTutorsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matched_tutors_activiyt);
 
-        //Enable the Up button
+        //Aktifkan tombol up
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar(); // Get a support ActionBar corresponding to this toolbar
@@ -53,10 +53,10 @@ public class MatchedTutorsActivity extends AppCompatActivity {
 
 
 
-        //Get data sent from previous activity
+        //Dapatkan data yang sudah terkirim dari activity sebelumnya
         List<String> subjects_id_searched = getIntent().getExtras().getStringArrayList("subjects_id");
 
-        //Retrieve tutors teaching at least one of subjects from subjects_id_searched
+        //Ambil pengajar setidaknya satu mata pelajaran dari subjects_id_searched
         getMatchedTutors(subjects_id_searched, new OnSuccessListener() {
             @Override
             public void onSuccess(final Object o) {
@@ -66,11 +66,11 @@ public class MatchedTutorsActivity extends AppCompatActivity {
                 final List<String> tutors_with_matched_subjects = new ArrayList<>(); //Tutors usernames, for alphabet scroller
                 Pair<User, String> temp_pair;
 
-                //Display a custom instruction, depending on whether tutors matched the search criteria or not
-                if (matched_tutors.size() == 0) { //No tutors matched the search criteria
+                //Menampilkan instruksi khusus, tergantung pada apakah tutor cocok dengan kriteria pencarian atau tidak
+                if (matched_tutors.size() == 0) { //Tidak ada tutor cocok kriteria pencarian
                     instructions_listview.setText(R.string.instructions_match1);
 
-                } else { //Tutors matched the search criteria
+                } else { //tutor cocok pada kriteria pencarian
                     instructions_listview.setText(R.string.instructions_match2);
                 }
 
@@ -83,7 +83,7 @@ public class MatchedTutorsActivity extends AppCompatActivity {
                 }
 
                 final ListView listView = findViewById(R.id.listView);
-                //Data need to be ordered for the alphabetical scroller to work properly
+                //Data perlu diurutkan untuk fitur alphabetical scroller agar dapat bekerja dengan baik
                 Collections.sort(user_info_list, new Comparator<Pair<User, String>>() {
                     @Override
                     public int compare(Pair<User, String> o1, Pair<User, String> o2) {
@@ -92,7 +92,7 @@ public class MatchedTutorsActivity extends AppCompatActivity {
                 });
                 listView.setAdapter(new SearchListViewAdapter(getBaseContext(), user_info_list));
 
-                //Set alphabet relevant with the subjects' names
+                //Set alphabet relevan dengan nama pelajaran
                 Alphabetik alphabetik = findViewById(R.id.alphSectionIndex);
                 String[] alphabet = Util.getCustomAlphabetList(tutors_with_matched_subjects);
                 alphabetik.setAlphabet(alphabet);
@@ -101,7 +101,7 @@ public class MatchedTutorsActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(View view, int position, String character) {
                         Collections.sort(tutors_with_matched_subjects);
-                        //Toast.makeText(getBaseContext(), info, Toast.LENGTH_SHORT).show();
+
                         listView.smoothScrollToPosition(Util.getPositionFromData(character, tutors_with_matched_subjects));
                     }
                 });
@@ -109,10 +109,10 @@ public class MatchedTutorsActivity extends AppCompatActivity {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        // Get the selected item text from ListView
+                        // Dapatkan teks item yang dipilih dari ListView
                         int pos = parent.getPositionForView(view);
 
-                        // Start a new activity to diplay the user profile of the selected tutor
+                        // Memulai activity baru untuk diplay profil pengguna tutor yang dipilih
                         Intent intent = new Intent(MatchedTutorsActivity.this, ViewTutorProfileActivity.class);
                         intent.putExtra("selected_tutor", user_info_list.get(pos).first);
                         startActivity(intent);
@@ -133,9 +133,9 @@ public class MatchedTutorsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
+            // Merespon ke tombol Up/Home di action bar
             case android.R.id.home:
-                finish(); // close this activity and return to preview activity (if there is any)
+                finish(); // tutup activity and kembali ke activity sebelumnya (jika ada)
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -150,14 +150,13 @@ public class MatchedTutorsActivity extends AppCompatActivity {
         UserManager.retrieveTutorsWithSubjects(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                //Only retain tutors that match the user criteria (subjects in the user
-                // learning needs pr subjects selected by the user)
+                //Hanya mempertahankan tutor yang cocok dengan pelajaran yang sesuai dengan kebutuhan murid
                 for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
                     User user = new User(doc);
 
                     List<String> matched_subjects = new ArrayList<>();
 
-                    // Iterate over the list of subjects in search criteria
+                    // Iterate atas daftar mata pelajaran dalam kriteria pencarian
                     for (String subject_id_item:subject_id) {
                         if (user.getSubjects().containsKey(subject_id_item)) {
                             matched_subjects.add(user.getSubjects().get(subject_id_item).getName());

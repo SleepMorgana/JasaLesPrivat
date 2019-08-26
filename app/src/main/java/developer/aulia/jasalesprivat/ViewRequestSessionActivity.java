@@ -71,7 +71,7 @@ public class ViewRequestSessionActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 //There was an error getting the sender quit activity
-                Util.printToast(mContext,"There was an issue retrieving the session's sender",Toast.LENGTH_LONG);
+                Util.printToast(mContext,"Terjadi masalah ketika membuat jadwal les baru",Toast.LENGTH_LONG);
                 finish();
             }
         });
@@ -86,11 +86,11 @@ public class ViewRequestSessionActivity extends AppCompatActivity {
         TextView subject = (TextView) findViewById(R.id.selected_subject);
         subject.setText(session.getSubject());
 
-        //Set time
+        //Set tanggal
         List<Date> selectedDates = session.getDates();
 
         final CalendarPickerView calendarView = (CalendarPickerView) findViewById(R.id.calendar_view);
-        //getting current
+        //mendapatkan waktu saat ini
         Calendar nextYear = Calendar.getInstance();
         nextYear.add(Calendar.YEAR, 1);
 
@@ -103,13 +103,13 @@ public class ViewRequestSessionActivity extends AppCompatActivity {
             calendarView.init(new Date(),nextYear.getTime())
                     .inMode(CalendarPickerView.SelectionMode.MULTIPLE);
 
-        //Set dates
+        //Dapatkan tanggal
         for (Date date : selectedDates){
             calendarView.selectDate(date);
             dateAdapter.add(date.toString());
         }
 
-        //Accept
+        //Terima
         Button accept = (Button) findViewById(R.id.accept_request_button);
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,39 +117,39 @@ public class ViewRequestSessionActivity extends AppCompatActivity {
                 UserManager.acceptSession(session, new OnSuccessListener() {
                     @Override
                     public void onSuccess(Object o) {
-                        Util.printToast(mContext,"Request accepted",Toast.LENGTH_LONG);
+                        Util.printToast(mContext,"Permintaan diterima",Toast.LENGTH_LONG);
                         finish();
                     }
                 }, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Util.printToast(mContext,"There was an issue accepting the request, please try again",Toast.LENGTH_LONG);
+                        Util.printToast(mContext,"Adanya masalah ketika menerima permintaan les, coba lagi",Toast.LENGTH_LONG);
                     }
                 });
             }
         });
 
-        //Decline
+        //Tolak
         Button decline = (Button) findViewById(R.id.decline_request_button);
         decline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Util.makeDialog("You are about to decline this request"
-                        , "If you wish to suggest another time, please get in touch with the student to ask for a change of time before declining",
+                Util.makeDialog("Yakin menolak permintaan les?"
+                        , "Calon murid anda mungkin akan mencari pengajar yang lain",
                         "Continue", "Cancel", mContext, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                //Continue
+                                //Lanjutkan
                                 UserManager.declineSession(session, new OnSuccessListener() {
                                     @Override
                                     public void onSuccess(Object o) {
-                                        Util.printToast(mContext,"The session was declined",Toast.LENGTH_LONG);
+                                        Util.printToast(mContext,"Permintaan ditolak",Toast.LENGTH_LONG);
                                         finish();
                                     }
                                 }, new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        Util.printToast(mContext,"There was an issue declining the request, please try again",Toast.LENGTH_LONG);
+                                        Util.printToast(mContext,"Adanya masalah ketika menolak permintaan les, mohon coba lagi",Toast.LENGTH_LONG);
                                     }
                                 });
                                 dialog.dismiss();
@@ -157,7 +157,7 @@ public class ViewRequestSessionActivity extends AppCompatActivity {
                         }, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                //cancel
+                                //Batal
                                 dialog.dismiss();
                                 return;
                             }
@@ -165,7 +165,7 @@ public class ViewRequestSessionActivity extends AppCompatActivity {
             }
         });
 
-        //hide control button if the request is not PENDING
+        //Sembunyikan tombol apabila permintaan les privat tidak PENDING
         if (!session.getStatus().equals(Status.PENDING)){
             accept.setVisibility(View.GONE);
             decline.setVisibility(View.GONE);
@@ -175,9 +175,9 @@ public class ViewRequestSessionActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
+            // Merespon action bar pada tombol Up/Home
             case android.R.id.home:
-                finish(); // close this activity and return to preview activity (if there is any)
+                finish(); // menutup activity dan kembali ke activity sebelumnya (jika ada)
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -185,22 +185,22 @@ public class ViewRequestSessionActivity extends AppCompatActivity {
     }
 
     /**
-     * Render the current user's identity (i.e. username, email address, profile picture)
-     * @param populated_user current logged-in user
+     * Render identitas pengguna saat ini (yaitu nama pengguna, alamat email, gambar profil)
+     * @param populated_user pengguna yang sudah login saat ini
      */
     private void updateUserIdentity(User populated_user) {
-        /*By default the profile picture is a gender-neutral avatar, unless he/she has uploaded his/her
-        own profile picture which must then be displayed instead of the default avatar */
+        /*Secara default, foto profil adalah avatar netral gender, kecuali jika ia telah mengunggah
+        gambar profil sendiri yang kemudian harus ditampilkan, bukan avatar default */
         if (populated_user.getProfile_picture() != null) {
             ImageView profile_pic_view = (ImageView) findViewById(R.id.profile_picture_view_id);
             profile_pic_view.setImageBitmap(populated_user.getProfile_picture());
         }
 
-        //Update navigation menu with the logged-in user's info
+        //Update menu navigasi dengan info pengguna yang sudah login
         //Username
         TextView text_view = findViewById(R.id.username_profile_id);
         text_view.setText(populated_user.getUsername());
-        //Email
+        //Email (tidak dipakai)
 //        text_view = findViewById(R.id.email_profile_id);
 //        text_view.setText(populated_user.getEmail());
     }

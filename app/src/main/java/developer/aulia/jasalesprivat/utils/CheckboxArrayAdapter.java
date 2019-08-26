@@ -14,15 +14,15 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 /**
- * Custom adapter for displaying an array Subject names (can be checked/unchecked)
+ * Custom adapter untuk menampilkan nama subjek array (dapat diperiksa/dicentang)
  * Adapted from: Vogel L, MySimpleArrayAdapter.java from the android-examples GitHub repository,
  * https://github.com/vogellacompany/codeexamples-android/blob/master/com.vogella.android.test.traceview.list/src/de/vogella/android/listactivity/MySimpleArrayAdapter.java
  */
 public class CheckboxArrayAdapter extends ArrayAdapter<String> {
     private final Context context;
-    private final String[] values; //Sorted array of subjects' name
-    private Map<String, Boolean> subject_map; /* Mapping subject names with a boolean indicating whether the
-    subject designated by its names is associated with the current user or not */
+    private final String[] values; //Sorted nama array pada daftar pelajaran
+    private Map<String, Boolean> subject_map; /* Memetakan nama pelajaran dengan Boolean yang mengindikasikan apakah
+    yang ditentukan oleh namanya terkait dengan pengguna saat ini atau tidak */
 
     public CheckboxArrayAdapter(Context context, String[] values, Map<String, Boolean> subject_map) {
         super(context, R.layout.checkboxrow, values);
@@ -47,7 +47,7 @@ public class CheckboxArrayAdapter extends ArrayAdapter<String> {
         checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                subject_map.put(checkbox.getText().toString(), checkbox.isChecked()); //Cannot use map.replace because such call requires API level 24 (current min is 19)
+                subject_map.put(checkbox.getText().toString(), checkbox.isChecked()); //Tidak dapat menggunakan map. replace karena panggilan tersebut memerlukan level API 24 (min saat ini adalah 19)
             }
         });
 

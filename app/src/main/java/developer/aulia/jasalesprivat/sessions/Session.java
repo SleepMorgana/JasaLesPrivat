@@ -23,7 +23,7 @@ public class Session extends Observable implements Storable , Parcelable {
     private String target;//id
     private Status status;//periksa apakah akun dapat diterima atau tidak (pending berarti menunggu)
     private String id;//mendapatkan id dari session(jadwal les)
-    private List<Object> dates = new ArrayList<>();// list of timestamps, yang juga berarti mengatur waktu kegiatan
+    private List<Object> dates = new ArrayList<>();// daftar timestamps, yang juga berarti mengatur waktu kegiatan
 
 
     public Session(DocumentSnapshot session){
@@ -106,7 +106,7 @@ public class Session extends Observable implements Storable , Parcelable {
 
     @Override
     public Map<String, Object> marshal() {
-        //the Id must be fetch from the instance, in firestore document ids aren't in the map
+        //Id harus diambil dari instansi, di firestore document ids tidak berada pada map
         Map<String, Object> session = new HashMap<>();
         session.put("Subject",subject);
         session.put("Sender",sender);
@@ -125,9 +125,9 @@ public class Session extends Observable implements Storable , Parcelable {
     }
 
     /**
-     * describeContents method for a Parcelable class (in this project, such class(es) has(have) no
+     * metode yang telah diuraikan untuk kelas Parcelable (dalam proyek ini, seperti kelas (es) telah (memiliki) tidak ada
      * child classes)
-     * @return 0. Parcelable class(es) in this project has(have) no child classes
+     * @return 0. Kelas parcelable (es) dalam proyek ini tidak ada child classes
      */
     @Override
     public int describeContents() {
@@ -135,9 +135,9 @@ public class Session extends Observable implements Storable , Parcelable {
     }
 
     /**
-     * Write an object to a parcel
-     * @param dest The Parcel in which the object should be written
-     * @param flags Additional flags about how the object should be written
+     * Tulis objek ke sebuah parcel
+     * @param dest Parcel di mana objek harus ditulis
+     * @param flags flags tambahan tentang bagaimana objek harus ditulis
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
@@ -154,7 +154,7 @@ public class Session extends Observable implements Storable , Parcelable {
     }
 
     /**
-     * Regenerate the object from parcel
+     * Regenerasi objek dari parcel
      */
     public static final Creator<Session> CREATOR = new Creator<Session>() {
         public Session createFromParcel(Parcel in) {
@@ -167,7 +167,7 @@ public class Session extends Observable implements Storable , Parcelable {
     };
 
     /**
-     * Constructor that takes a parcel and construct a populated user object
+     * Constructor yang mengambil parcel dan membangun sebuah objek pengguna
      * @param in parcel
      */
     private Session(Parcel in) {

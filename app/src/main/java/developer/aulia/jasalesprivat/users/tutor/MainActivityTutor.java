@@ -29,7 +29,7 @@ import developer.aulia.jasalesprivat.utils.Util;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-//This is going to be used as the home activity of the application for tutors
+//Activity ini digunakan untuk tampilan activity awal tutor/pengajar
 public class MainActivityTutor extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -49,20 +49,23 @@ public class MainActivityTutor extends AppCompatActivity
         info_sessions = (TextView) findViewById(R.id.intro_future_sessions_id);
         listView = findViewById(R.id.listView);
 
-        //Enable the Up button
+        //Aktifkan tombol up
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
         user = UserManager.getUserInstance().getUser();
 
-        /*By default the profile picture is a gender-neutral avatar. If the logged-in user doesn't have
-        a profile picture associated to his/her profile, this must be displayed instead of the default avatar*/
+        /*Secara default gambar profil adalah avatar gender-netral. Jika pengguna yang masuk tidak memiliki
+        gambar profil yang terkait dengan profilnya, ini harus ditampilkan, bukan avatar default */
         if (user.getProfile_picture() != null) {
             ImageView profile_pic_view = (ImageView) headerView.findViewById(R.id.profile_pic_id);
             profile_pic_view.setImageBitmap(user.getProfile_picture());
         }
 
-        //Update navigation menu with the logged-in user's info
+        //Tampilkan daftar les privat tutor yang ada saat ini
+        Util.renderNUpcommingSessions(getBaseContext(), info_sessions, user, listView);
+
+        //Perbarui menu navigasi dengan info pengguna yang masuk pada
         //Username
         TextView text_view = headerView.findViewById(R.id.username_nav_id);
         text_view.setText(user.getUsername());
@@ -70,68 +73,30 @@ public class MainActivityTutor extends AppCompatActivity
         text_view = headerView.findViewById(R.id.email_navigation_id);
         text_view.setText(user.getEmail());
 
-        //Everytime the user clicks on the header of the navbar, he/she is redirected to its profile page
+        //Setiap kali pengguna mengklik header navbar, dia akan diarahkan ke halaman profilnya
         headerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivityTutor.this, UserProfileActivity.class);
-                //Data sent: currently logged-in user
+                //Data yang dikirim: saat ini login pengguna
                 intent.putExtra("myCurrentUser", user);
                 startActivity(intent);
             }
         });
 
-        //Sign out action
+        //User akan logout
         sign_out_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 UserManager.signOut();
 
-                //Go back to sign in / sign out activity
+                //Kembali ke menu sign in/login
                 Intent intent = new Intent(MainActivityTutor.this, SignInSignUp.class);
                 startActivity(intent);
                 finish();
             }
         });
 
-        //Display N upcoming sessions
-        /*Util.renderNUpcommingSessions(getBaseContext(), info_sessions, user, listView);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        final int[] newMessages = {0};
-        final TextView messages = findViewById(R.id.messages_textview);
-        messages.setVisibility(View.GONE);
-        Util.startQueueService(this);
-        RabbitQueueHelper.setChannelIsReady(true);
-        QueueService.addQueueMessageHandler(new OnQueueMessageArrive() {
-            @Override
-            public void messageReady(RxAbstractMessage message) {
-                messages.setVisibility(View.VISIBLE);
-                newMessages[0] += 1;
-                UserManager.retrieveUserById(message.getSender(), new OnSuccessListener<User>() {
-                    @Override
-                    public void onSuccess(User user) {
-                        messages.setText("New message from "+user.getUsername());
-                    }
-                }, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-
-                if (newMessages[0]>1)
-                    messages.setText("New messages: "+newMessages[0]);
-
-                MessageQueueStore.getInstance().add(message);
-                Log.d(Util.TAG,"Message Main: "+message.getText());
-            }
-        });*/
 
     }
 
@@ -139,33 +104,33 @@ public class MainActivityTutor extends AppCompatActivity
     protected void onRestart() {
         super.onRestart();
 
-        //When BACK BUTTON is pressed, the activity on the stack is restarted
-        /*By default the profile picture is a gender-neutral avatar. If the logged-in user doesn't have
-        a profile picture associated to his/her profile, this must be displayed instead of the default avatar*/
+        //Ketika tombol kembali ditekan, aktivitas pada tumpukan dimulai ulang
+        /* Secara default gambar profil adalah avatar gender-netral. Jika pengguna yang masuk tidak memiliki
+        gambar profil yang terkait dengan profilnya, ini harus ditampilkan, bukan avatar default */
         if (user.getProfile_picture() != null) {
             ImageView profile_pic_view = (ImageView) headerView.findViewById(R.id.profile_pic_id);
             profile_pic_view.setImageBitmap(user.getProfile_picture());
         }
 
-        //Display N upcoming sessions
+        //Tampilkan sesi les privat
         Util.renderNUpcommingSessions(getBaseContext(), info_sessions, user, listView);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate menu; Hal ini menambahkan item ke action bar tindakan jika ada.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        //Menangani Action Bar item klik di sini. Action Bar akan
+        //secara otomatis menangani klik pada tombol Home/up,
+        //seperti yang ditentukan pada parent activity di AndroidManifest. XML.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        //noinspeksi SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -176,15 +141,12 @@ public class MainActivityTutor extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        // Lihat navigasi menangani klik item di sini.
         int id = item.getItemId();
 
         if (id == R.id.nav_requests) {
-           //goto TutorSessionActivity
+           //pergi ke TutorSessionActivity
             Intent intent = new Intent(this,TutorSessionActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_conversations) {
-            Intent intent = new Intent(this,ConversationListActivity.class);
             startActivity(intent);
         }
 
@@ -193,9 +155,4 @@ public class MainActivityTutor extends AppCompatActivity
         return true;
     }
 
-    /*@Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Util.stopQueueService(this);
-    }*/
 }

@@ -10,11 +10,11 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public abstract class DatabaseHelper<T extends Storable> {
-    private String COLLECTION_NAME;// collection where the entity is situated
+    private String COLLECTION_NAME;// collection dimana entitas berada
     protected FirebaseFirestore db = FirebaseFirestore.getInstance();
     private String TAG;
 
-    public DatabaseHelper(String collectionName, String tag){
+    public DatabaseHelper(String collectionName, String tag) {
         COLLECTION_NAME = collectionName;
         TAG = tag;
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
@@ -23,9 +23,9 @@ public abstract class DatabaseHelper<T extends Storable> {
         db.setFirestoreSettings(settings);
     }
 
-    //if the entity is present in the database update the record, else create new record
-    public void upsert(final T obj, OnSuccessListener<Void> successes, OnFailureListener failureListener){
-        if (obj.getId()==null) {
+    //apabila entitas terbaru ada di database, update record, jika tidak buat record baru
+    public void upsert(final T obj, OnSuccessListener<Void> successes, OnFailureListener failureListener) {
+        if (obj.getId() == null) {
             db.collection(COLLECTION_NAME)
                     .document()
                     .set(obj.marshal())
@@ -39,23 +39,24 @@ public abstract class DatabaseHelper<T extends Storable> {
                 .addOnSuccessListener(successes)
                 .addOnFailureListener(failureListener);
     }
-    //get entity by document id
-    public void getById(String id, OnCompleteListener<DocumentSnapshot> callback){
+
+    //mendapatkan entitas dari document id
+    public void getById(String id, OnCompleteListener<DocumentSnapshot> callback) {
         DocumentReference docRef = db.collection(COLLECTION_NAME).document(id);
         docRef.get().addOnCompleteListener(callback);
     }
 
-    //delete single item
-    public void deleteById(String id, OnSuccessListener<Void> successes, OnFailureListener failureListener){
+    //hapus satu item
+    public void deleteById(String id, OnSuccessListener<Void> successes, OnFailureListener failureListener) {
         db.collection(COLLECTION_NAME).document(id).delete()
                 .addOnSuccessListener(successes)
                 .addOnFailureListener(failureListener);
     }
 
-    //get item list from the collection
-    public void getAll(OnSuccessListener<QuerySnapshot> successListener, OnFailureListener failureListener){
-       db.collection(COLLECTION_NAME).get()
-               .addOnSuccessListener(successListener)
-               .addOnFailureListener(failureListener);
+    //mendapatkan daftar item pada collection
+    public void getAll(OnSuccessListener<QuerySnapshot> successListener, OnFailureListener failureListener) {
+        db.collection(COLLECTION_NAME).get()
+                .addOnSuccessListener(successListener)
+                .addOnFailureListener(failureListener);
     }
 }

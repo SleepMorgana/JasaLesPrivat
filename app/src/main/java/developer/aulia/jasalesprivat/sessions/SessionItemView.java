@@ -19,12 +19,12 @@ public class SessionItemView extends ListViewItem<Pair<String, String>> {
     public View getView() {
         View mView = super.getView();
 
-        //check what type of layout
+        //cek apa type layout tersebut
         if (resourceLayout==R.layout.session_item_layout) {
             TextView date = (TextView) mView.findViewById(R.id.session_date_id);
             TextView time = (TextView) mView.findViewById(R.id.session_time_id);
 
-            //need to add status to user model
+            //dibutuhkan untuk menambahkan status ke user model
             date.setText(element.first);
             time.setText(element.second);
         }

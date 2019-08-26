@@ -56,7 +56,7 @@
     <string name="requested_sessions_txt">Daftar Permintaan Les</string>
     <string name="date_txt">Tanggal</string>
     <string name="no_upcoming_sessions_txt">"Anda tidak memiliki jadwal les "</string>
-    <string name="upcoming_sessions_txt">Jadwal sesi berikutnya (lima terkini):</string>
+    <string name="upcoming_sessions_txt">Jadwal sesi berikutnya:</string>
     <string name="send">Kirim</string>
     <string name="selected_tutor_txt">Pengajar yang dipilih</string>
     <string name="action_today">Hari Ini</string>
@@ -72,4 +72,6 @@
     <string name="collection_chat_messages">Pesan Chat</string>
     <string name="action_edit_event">Edit Jadwal</string>
     <string name="app_add_event_activity">Tambah Jadwal</string>
+    <string name="no_upcoming_sessions_txt2">Saat ini pengajar sedang memiliki waktu luang</string>
+    <string name="upcoming_sessions_txt2">Jadwal les privat pengajar saat ini</string>
 </resources>

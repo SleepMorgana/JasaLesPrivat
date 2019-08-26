@@ -44,10 +44,10 @@ public class TutorSessionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_session_list);
 
-        //Enable the Up button
+        //Aktifkan tombol up
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar(); // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar(); // Dapatkan ActionBar dukungan yang sesuai dengan Toolbar ini
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setDisplayShowHomeEnabled(true);
@@ -99,16 +99,16 @@ public class TutorSessionActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
+            // Merespon ke tombol Up/Home di action bar
             case android.R.id.home:
-                finish(); // close this activity and return to preview activity (if there is any)
+                finish(); // tutup activity and kembali ke activity sebelumnya (jika ada)
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    //Generates list of elements fr=or the list view and array adapter
+    //Menghasilkan daftar elemen FR = atau tampilan daftar dan adapter array
     private List<String> getAdapterLabel(User user, Map<String,User> senderMap){
         List<String> sessions = new ArrayList<>();
         for (Session session : user.getSessions()){
@@ -118,7 +118,7 @@ public class TutorSessionActivity extends AppCompatActivity {
         return sessions;
     }
 
-    //Async call to db to retrieve usernames of sender of the session
+    //Asinkron panggilan ke DB untuk mengambil nama pengguna pengirim jadwal sesi les privat
     private void getUsernameFromSessions(final User user, final OnSuccessListener<Map<String,User>> successListener,
                                      final OnFailureListener failureListener){
         executorService.submit(new Runnable() {

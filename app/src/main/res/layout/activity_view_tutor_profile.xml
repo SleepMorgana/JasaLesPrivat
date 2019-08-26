@@ -115,33 +115,7 @@
             android:textColor="@android:color/white"
             tools:ignore="ButtonStyle" />
 
-        <Button
-            android:id="@+id/session_check_activity"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="12dp"
-            android:layout_weight="1"
-            android:background="@drawable/round_button"
-            android:drawableStart="@drawable/ic_schedule"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:text="@string/schedule"
-            android:textColor="@android:color/white"
-            tools:ignore="ButtonStyle" />
 
-        <Button
-            android:id="@+id/chat_button_id"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:layout_weight="1"
-            android:background="@drawable/round_button"
-            android:drawableStart="@android:drawable/sym_action_chat"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:text="@string/chat_txt"
-            android:textColor="@android:color/white"
-            tools:ignore="ButtonStyle" />
     </LinearLayout>
 
 </LinearLayout>

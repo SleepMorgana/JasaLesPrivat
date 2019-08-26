@@ -58,7 +58,7 @@ public class SignInSignUp extends AppCompatActivity {
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
-     * The {@link ViewPager} that will host the section contents.
+     * The {@link ViewPager} akan digunakan untuk membuat halaman fragment.
      */
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
@@ -71,21 +71,18 @@ public class SignInSignUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in_sign_up);
-        //Initialize Firebase Auth
+        //Inisialisasi Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);*/
 
 
         mTabLayout = findViewById(R.id.tabs);
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
+        // Membuat adapter yang dapat kembali ke fragment untuk setiap aktivitas
+        // utama dari activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
+        // Mengatur ViewPager dengan section adapter.
         mViewPager = findViewById(R.id.container);
         populateViewPager();
     }
@@ -107,7 +104,7 @@ public class SignInSignUp extends AppCompatActivity {
 
 
     public void startMainActivity(){
-        // Go to home activity
+        // ke activity home
         Intent intent = new Intent(this, MainActivityStudent.class);
         startActivity(intent);
         finish();
@@ -116,7 +113,7 @@ public class SignInSignUp extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
+        // Cek apabila pengguna sudah terdaftar (non-null) dan Update UI secara berkala.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             //user has already logged in recently
@@ -131,7 +128,7 @@ public class SignInSignUp extends AppCompatActivity {
     }
 
     /**
-     * Creates the fragments and sets it to ViewPager
+     * Membuat fragments dan set ke ViewPager.
      */
     private void populateViewPager() {
         TabDetails tab;
@@ -146,11 +143,11 @@ public class SignInSignUp extends AppCompatActivity {
 
 
     /**
-     * A placeholder fragment containing a simple view.
+     * PlaceholderFragment mengandung simple view.
      */
     public static class PlaceholderFragment extends Fragment {
         /**
-         * The fragment argument representing the section number for this
+         * Argumen fragment yang mewakili section number untuk
          * fragment.
          * TODO we may want to declare vars for the different error messages
          */
@@ -160,15 +157,15 @@ public class SignInSignUp extends AppCompatActivity {
         private OnSuccessListener signinSuccess = new OnSuccessListener() {
             @Override
             public void onSuccess(final Object o) {
-                // Sign in success, TODO go to next activity
+                // Akun berhasil login/sign in, TODO go to next activity
                 Log.d(TAG, "signInUserWithEmail:success");
-                // Sucessfully signed in user is an admin -> Go to the admin home page
+                // Berhasil login sebagai admin, pergi ke halaman admin
                 if (((User) o).getRole().equals(Role.ADMIN)) {
                     mDialog.dismiss();
                     startAdminMainActivity();
                     return;
                 } else {
-                    //Download profile picture if any as Bitmap and update the corresponding profile picture attribute in the current user
+                    //Download gambar profil jika ada konversi bitmap dan perbarui atribut gambar profil yang sesuai di pengguna saat ini
                     FirebaseStorage.getInstance().getReference().
                             child("images/profile_picture_" + Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser())
                                     .getUid()).getBytes(Long.MAX_VALUE).addOnCompleteListener(new OnCompleteListener<byte[]>() {
@@ -176,15 +173,15 @@ public class SignInSignUp extends AppCompatActivity {
                         public void onComplete(@NonNull Task<byte[]> task) {
                             if (task.isSuccessful()) {
                                 byte[] picture = task.getResult();
-                                //Picture converted in Bitmap
+                                //Gambar profil dikonversi ke Bitmap
                                 Bitmap bmp = BitmapFactory.decodeByteArray(picture, 0, picture.length);
                                 ((User) o).setProfile_picture(bmp);
                             }
                             mDialog.dismiss();
-                            /* Whether the profile picture download was successful or not. In the latter
-                              case the reason might be that the user has not uploaded his/her own profile
-                              picture yet. When the downloading task is not successfull, the user will access
-                              the app with a gender neutral avatar (that can be edited within the app) */
+                            /* Apakah gambar profil download berhasil atau tidak. Di akhir
+                              mungkin alasannya bahwa pengguna belum mengunggah profilnya sendiri.
+                              Ketika tugas download tidak berhasil, pengguna akan mengakses
+                              aplikasi dengan avatar netral gender (yang dapat diedit dalam aplikasi) */
                             startStudentorTutorMainActivity((User) o);
                         }
                     });
@@ -194,13 +191,13 @@ public class SignInSignUp extends AppCompatActivity {
         private OnFailureListener signinFailure = new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                // If sign in fails, display a message to the user.
+                // Apabila sign in gagal, tampilkan pesan ke pengguna.
                 Log.w(TAG, "signInUserWithEmail:failure", e);
 
                 if (e instanceof UnsupportedOperationException)
-                    Util.printToast(getActivity(), "Signin failed. Please try again.",Toast.LENGTH_SHORT);
+                    Util.printToast(getActivity(), "Login gagal, mohon coba lagi.",Toast.LENGTH_SHORT);
                 if (e instanceof java.lang.InstantiationException) {
-                    Util.printToast(getActivity(), String.format("Signin failed: %s", e.getMessage()), Toast.LENGTH_SHORT);
+                    Util.printToast(getActivity(), String.format("Login gagal: %s", e.getMessage()), Toast.LENGTH_SHORT);
                 }
                 mDialog.dismiss();
             }
@@ -210,16 +207,15 @@ public class SignInSignUp extends AppCompatActivity {
         private OnSuccessListener signupSuccess = new OnSuccessListener() {
             @Override
             public void onSuccess(Object o) {
-                // Sign up success, go to next activity, TODO add subject selection
+                // Sign up sukses, ke activity selanjutnya, TODO add subject selection
                 Log.d(TAG, "createUserWithEmail:success");
-                Util.printToast(getActivity(), "Account has been successfully recorded!" +
-                        "\nPlease check verification email before sign in.", Toast.LENGTH_SHORT);
+                Util.printToast(getActivity(), "Akun berhasil dibuat. Selamat menikmati", Toast.LENGTH_SHORT);
             }
         };
         private OnFailureListener signupFailure = new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                // If sign up fails, display a message to the user.
+                // Apabila sign in gagal, tampilkan pesan ke pengguna.
                 Log.w(TAG, "createUserWithEmail:failure", e);
                 Util.printToast(getActivity(), "Sign up failed. Please try again.",Toast.LENGTH_SHORT);
             }
@@ -230,7 +226,7 @@ public class SignInSignUp extends AppCompatActivity {
         }
 
         /**
-         * Returns a new instance of this fragment for the given layout.
+         * Mengembalikan sebuah instance baru dari fragmen ini untuk layout yang diberikan.
          */
         public static PlaceholderFragment newInstance(int layout) {
             PlaceholderFragment fragment = new PlaceholderFragment();
@@ -247,7 +243,7 @@ public class SignInSignUp extends AppCompatActivity {
             final View layout = inflater.inflate(getArguments().getInt(ARG_LAYOUT), container, false);
             int currentLayout = getArguments().getInt(ARG_LAYOUT);
 
-            //sign in fragment
+            //Fragment sign in/login
             if (currentLayout == R.layout.sign_in_fragment) {
                 Button signIn = layout.findViewById(R.id.sign_in_button_id);
                 signIn.setOnClickListener(new View.OnClickListener() {
@@ -257,7 +253,7 @@ public class SignInSignUp extends AppCompatActivity {
                         String email = (ed1.getText()!=null)? ed1.getText().toString().toLowerCase().trim() : "";
                         EditText ed2 = layout.findViewById(R.id.passwd_input_sign_in_id);
                         String password = (ed2.getText()!=null)? ed2.getText().toString().toLowerCase().trim() : "";
-                        //verification input
+                        //Input verifikasi
                         if (email.equals("") || password.equals("")) {
                             Util.printToast(getActivity(), "Sign in failed: empty fields", Toast.LENGTH_SHORT);
                             return;
@@ -280,7 +276,7 @@ public class SignInSignUp extends AppCompatActivity {
                 });
             }
 
-            //sign up fragment
+            //fragment untuk mendaftar akun
             if (currentLayout == R.layout.sign_up_fragment) {
                 Button signUp = layout.findViewById(R.id.sign_up_button_id);
                 RadioButton studentRadioButton = layout.findViewById(R.id.radioButton_student_id);
@@ -301,21 +297,22 @@ public class SignInSignUp extends AppCompatActivity {
                         EditText ed4 = layout.findViewById(R.id.input_confirm_passwd_sign_up_id);
                         String confirmPassword = (ed4.getText()!=null)? ed4.getText().toString().toLowerCase().trim() : "";
 
+
                         Log.d(TAG, "SIGN_UP Clicked");
 
                         //check fields
-                        if (username.equals("") || email.equals("") || password.equals("")) {
-                            Util.printToast(getActivity(), "Sign up failed: empty fields", Toast.LENGTH_SHORT);
+                        if (username.equals("") || email.equals("") || password.equals("")  ) {
+                            Util.printToast(getActivity(), "Periksa kembali field yang kosong", Toast.LENGTH_SHORT);
                             return;
                         }
 
                         if (!password.equals(confirmPassword)) {
-                            Util.printToast(getActivity(), "Sign up failed: password and confirmation mismatch", Toast.LENGTH_SHORT);
+                            Util.printToast(getActivity(), "Password dan Konfirmasi Password tidak cocok", Toast.LENGTH_SHORT);
                             return;
                         }
 
                         if (role[0]==null){
-                            Util.printToast(getActivity(), "Sign up failed: no role was selected",Toast.LENGTH_SHORT);
+                            Util.printToast(getActivity(), "Mohon pilih salah satu peran",Toast.LENGTH_SHORT);
                             return;
                         }
 
@@ -328,7 +325,7 @@ public class SignInSignUp extends AppCompatActivity {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked){
                             role[0] = Role.STUDENT;
-                            Log.d(TAG, "Student role was selected");
+                            Log.d(TAG, "Peran murid telah dipilih");
                         }
                     }
                 });
@@ -338,7 +335,7 @@ public class SignInSignUp extends AppCompatActivity {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked) {
                             role[0] = Role.TUTOR;
-                            Log.d(TAG, "Tutor role was selected");
+                            Log.d(TAG, "Peran tutor telah dipilih");
                         }
                     }
                 });
@@ -349,14 +346,14 @@ public class SignInSignUp extends AppCompatActivity {
 
 
         private void startAdminMainActivity(){
-            // Go to home activity
+            // Pergi ke halaman AdminMainActivity
             Intent intent = new Intent(getActivity(), AdminMainActivity.class);
             startActivity(intent);
             Objects.requireNonNull(getActivity()).finish();
         }
 
         /**
-         * Go to students' main activity
+         * Pergi ke halaman MainActivityStudent
          */
         private void startStudentMainActivity() {
             Intent intent = new Intent(getActivity(), MainActivityStudent.class);
@@ -364,7 +361,7 @@ public class SignInSignUp extends AppCompatActivity {
         }
 
         /**
-         * Go to tutors' main activity
+         * Pergi ke halaman MainActivityTutor
          */
         private void startTutorMainActivity() {
             Intent intent = new Intent(getActivity(), MainActivityTutor.class);
@@ -372,12 +369,12 @@ public class SignInSignUp extends AppCompatActivity {
         }
 
         private void startStudentorTutorMainActivity(User my_user) {
-            // Sucessfully signed in user is a student -> Go to the student home page
+            // Berhasil login sebagai murid, dapatkan informasi akun kemudian ke halaman murid
             if (my_user.getRole().equals(Role.STUDENT)) {
                 startStudentMainActivity();
                 Objects.requireNonNull(getActivity()).finish();
 
-                // Sucessfully signed in user is a tutor -> Go to the tutor home page
+             // Berhasil login sebagai pengajar, dapatkan informasi akun kemudian ke halaman tutor
             } else if (my_user.getRole().equals(Role.TUTOR)) {
                 startTutorMainActivity();
                 Objects.requireNonNull(getActivity()).finish();
@@ -386,8 +383,8 @@ public class SignInSignUp extends AppCompatActivity {
     }
 
     /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
+     * A {@link FragmentPagerAdapter} yang mengembalikan fragment yang sesuai untuk
+     * salah satu bagian/tab/halaman.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         private final List<TabDetails> tabs = new ArrayList<>();

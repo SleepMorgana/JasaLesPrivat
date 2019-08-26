@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".users.student.ViewTutorProfileActivity"
-            android:label="Selected Tutor's Profile"
+            android:label="Deskripsi Pengajar"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -28,7 +28,7 @@
         </activity>
         <activity
             android:name=".RequestSessionActivity"
-            android:label="Request a session"
+            android:label="Buat Permintaan Les"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -38,18 +38,10 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".AddEventActivity"
-            android:label="@string/app_add_event_activity"
-            android:parentActivityName=".ScheduleSessionActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-
 
         <activity
             android:name=".ViewRequestSessionActivity"
-            android:label="Request a session"
+            android:label="Cek Permintaan Les"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -60,7 +52,7 @@
         </activity>
         <activity
             android:name=".users.student.MatchedTutorsActivity"
-            android:label="Matched tutors"
+            android:label="Pengajar yang cocok"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -71,29 +63,7 @@
         </activity>
         <activity
             android:name=".users.student.SearchTutorsActivity"
-            android:label="Search Tutors"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ChatroomActivity"
-            android:label="Chat"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ScheduleSessionActivity"
-            android:label="Search Tutors"
+            android:label="Cari pengajar"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -104,7 +74,7 @@
         </activity>
         <activity
             android:name=".users.UserProfileEditActivity"
-            android:label="Edit My Profile"
+            android:label="Edit Profil"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -115,7 +85,7 @@
         </activity>
         <activity
             android:name=".users.UserProfileActivity"
-            android:label="My Profile"
+            android:label="Profil saya"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -137,7 +107,7 @@
         </activity>
         <activity
             android:name=".ForgottenPasswordActivity"
-            android:label="Forgot Password?"
+            android:label="Lupa Password?"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -207,17 +177,7 @@
         <service android:name=".queue.channelRcv.QueueService"/>
         <activity
             android:name=".users.tutor.TutorSessionActivity"
-            android:label="Requests"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".users.tutor.ConversationListActivity"
-            android:label="My contacts"
+            android:label="Permintaan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

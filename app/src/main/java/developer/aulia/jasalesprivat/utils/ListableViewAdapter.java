@@ -12,17 +12,13 @@ public abstract class ListableViewAdapter<T> extends BaseAdapter {
 
     protected Context context;
     protected List<T> data;
-    //private ImageLoader imageLoader;
     protected ListViewItem viewItem;
 
 
     public ListableViewAdapter(Context a, List<T> d){
         context=a;
         data=d;
-//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-//                .build();
-//        imageLoader = ImageLoader.getInstance();
-//        imageLoader.init(config);
+
     }
 
     @Override
@@ -44,7 +40,7 @@ public abstract class ListableViewAdapter<T> extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        //MUST BE IMPLEMENTED
+        //HARUS DIIMPLEMENTASIKAN
         return null;
     }
 }

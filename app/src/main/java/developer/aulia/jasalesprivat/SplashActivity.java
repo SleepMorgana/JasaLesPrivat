@@ -11,31 +11,30 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-import developer.aulia.jasalesprivat.queue.channelTransmission.ChannelSingleton;
 
 public class SplashActivity extends Activity {
-    //Use splash screen to perform checks on device, like if the device is connected to
-    //the network or the user as already logged in
+    //Gunakan Splash Screen untuk melakukan pemeriksaan pada perangkat, seperti jika perangkat tersambung ke
+    //internet
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        //At the moment we aren't performing any checks just sleeping
+        //Saat ini sistem tidak melakukan pemeriksaan
         new Thread() {
             @Override
             public void run() {
                 try {
                     super.run();
 
-                    //initializing queue
-                   try {
-                        ChannelSingleton.getInstance();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (TimeoutException e) {
-                        e.printStackTrace();
+                    //inisialisasi splash screen
+                    try
+                    {
+                        Thread.sleep(1000);
                     }
-                    sleep(100);  //Delay of 0.1 seconds
+                    catch(InterruptedException ex)
+                    {
+                        Thread.currentThread().interrupt();
+                    }
 
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "There were some issues loading the application, please try again later",

@@ -19,12 +19,12 @@ public class UserSearchItemView extends ListViewItem<Pair<User, String>> {
     public View getView() {
         View mView = super.getView();
 
-        //check what type of layout
+        //cek layout search
         if (resourceLayout==R.layout.tutor_search_item_layout) {
             TextView username = (TextView) mView.findViewById(R.id.username_item_val_id);
             TextView subjects_list = (TextView) mView.findViewById(R.id.subject_list_id_val);
 
-            //need to add status to user model
+            //butuh menambahkan status ke user model
             username.setText(element.first.getUsername());
             subjects_list.setText(element.second);
         }

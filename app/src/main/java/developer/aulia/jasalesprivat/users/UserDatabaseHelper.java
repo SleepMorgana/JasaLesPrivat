@@ -30,7 +30,7 @@ public class UserDatabaseHelper extends DatabaseHelper<User> {
 
     @Override
     public void getAll(OnSuccessListener<QuerySnapshot> successListener, OnFailureListener failureListener) {
-        //Probably not a good idea in the case of users, need a more limiting query methods
+       //Mungkin bukan ide yang baik dalam kasus pengguna, perlu metode query yang lebih membatasi
     }
 
 
@@ -54,7 +54,7 @@ public class UserDatabaseHelper extends DatabaseHelper<User> {
         CollectionReference tutorsRef = db.collection(COLLECTION_NAME);
         Query query = tutorsRef.whereEqualTo("Role", Role.TUTOR.toString())
                                .whereEqualTo("Status", Status.ACCEPTED.toString());
-                               //.whereNotEqualTo("Subjects", new HashMap<>()); //Firebase does not provide inequality checks
+
         query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {

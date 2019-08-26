@@ -64,16 +64,6 @@
             app:itemsColor="@color/design_default_color_primary" />
         </LinearLayout>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/admin_create_subject_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:src="@drawable/ic_filter_list"
-            app:backgroundTint="@android:color/holo_orange_light" />
-
     </FrameLayout>
 
 </LinearLayout>

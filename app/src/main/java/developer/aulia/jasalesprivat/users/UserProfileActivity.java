@@ -33,22 +33,22 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        //Enable the Up button
+        //Aktifkan tombol up pada toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar(); // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar(); // dapat dukungan ActionBar pada toolbar ini
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setDisplayShowHomeEnabled(true);
         }
 
-        //Current user
+        //User saat ini
         user = UserManager.getUserInstance().getUser();
 
-        //Render the user's identity
+        //Render identitas pengguna
         updateUserIdentity(user);
 
-        //Render the user's subjects (learning needs for subjects vs tutoring subjects for tutors)
+        //Render subyek pengguna (kebutuhan belajar untuk murid dan Les subyek untuk tutor)
         renderSubjects(user);
     }
 
@@ -56,19 +56,19 @@ public class UserProfileActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
 
-        //When BACK BUTTON is pressed, the activity on the stack is restarted
-        /*By default the profile picture is a gender-neutral avatar, unless he/she has uploaded his/her
-        own profile picture which must then be displayed instead of the default avatar */
+        //Ketika tombol kembali ditekan, aktivitas pada tumpukan dimulai ulang
+        /* Secara default, foto profil adalah avatar netral gender, kecuali jika ia telah mengunggah
+        gambar profil sendiri yang kemudian harus ditampilkan bukan default avatar */
         if (user.getProfile_picture() != null) {
             ImageView profile_pic_view = (ImageView) findViewById(R.id.profile_picture_view_id);
             profile_pic_view.setImageBitmap(user.getProfile_picture());
         }
 
-        //Render the user's subjects (learning needs for subjects vs tutoring subjects for tutors)
+        //Render subyek pengguna (kebutuhan belajar untuk murid dan Les subyek untuk tutor)
         renderSubjects(user);
     }
 
-    // create an action bar button
+    // buat button actionbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_student_tutor_profile, menu);
@@ -78,16 +78,16 @@ public class UserProfileActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Edit button clicked, go to the edit profile activity
-            case R.id.editprofile_button_id: //cf. menu folder
-                // Go to the edit user profile activity
+
+            case R.id.editprofile_button_id:
+                //Buka edit user profile activity
                 Intent intent = new Intent(UserProfileActivity.this, UserProfileEditActivity.class);
                 intent.putStringArrayListExtra("user_ordered_subject_names", (ArrayList<String>) orderedSubjects.first);
                 startActivity(intent);
                 return true;
-            // Respond to the action bar's Up/Home button
+            //Merespons tombol up/Home di Bar tindakan
             case android.R.id.home:
-                finish(); // close this activity and return to preview activity (if there is any)
+                finish(); // menutup aktivitas ini dan kembali ke aktivitas pratinjau (jika ada)
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -95,18 +95,18 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     /**
-     * Render the current user's identity (i.e. username, email address, profile picture)
-     * @param populated_user current logged-in user
+     * Render identitas pengguna saat ini (yaitu username, alamat email, gambar profil)
+     * @param populated_user saat ini login pengguna
      */
     private void updateUserIdentity(User populated_user) {
-        /*By default the profile picture is a gender-neutral avatar, unless he/she has uploaded his/her
-        own profile picture which must then be displayed instead of the default avatar */
+        /* Secara default, foto profil adalah avatar netral gender, kecuali jika ia telah mengunggah
+        gambar profil sendiri yang kemudian harus ditampilkan bukan default avatar */
         if (populated_user.getProfile_picture() != null) {
             ImageView profile_pic_view = (ImageView) findViewById(R.id.profile_picture_view_id);
             profile_pic_view.setImageBitmap(populated_user.getProfile_picture());
         }
 
-        //Update the layout with the logged-in user's info
+        //Update the layout dengan pengguna yang masuk
         //Username
         TextView text_view = findViewById(R.id.username_profile_id);
         text_view.setText(populated_user.getUsername());
@@ -116,14 +116,14 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     /**
-     * Render the current user's list of subjects (learning needs for a student, tutoring subjects for a tutor)
-     * @param populated_user current logged-in user
+     * Render daftar pengguna saat ini subjek (kebutuhan belajar untuk mahasiswa, Les mata pelajaran untuk tutor)
+     * @param populated_user saat ini login pengguna
      */
     private void renderSubjects(User populated_user) {
-        final ListView listView = findViewById(R.id.listView); //Listview implementation, with SORTED list of DATA
+        final ListView listView = findViewById(R.id.listView); //Implementasi ListView, dengan daftar DATA yang diurutkan
         TextView instructions = findViewById(R.id.subjects_instructions_id);
         Alphabetik alphabetik = findViewById(R.id.alphSectionIndex);
-        //Alphabetically ordered list of learning needs (student) or tutoring subjects (tutors)
+        //Daftar alfabetis urutan kebutuhan belajar (siswa) atau Les mata pelajaran (tutor)
         orderedSubjects = populated_user.getOrderedSubjects();
 
         // Title of the list depends on the role of the user
@@ -137,27 +137,27 @@ public class UserProfileActivity extends AppCompatActivity {
                 break;
         }
 
-        // Display instructions on how to add subjects if the user's subject list is empty
+        // Menampilkan petunjuk tentang cara menambahkan subjek jika daftar subjek pengguna kosong
         if (orderedSubjects.first.size() == 0) {
             instructions.setText(R.string.no_subjects_specified);
-            //Manage visibility
-            //Show instructions for adding subjects when the user has no subjects associated with his profile
+            //Atur visibilitas
+            //Tampilkan petunjuk untuk menambahkan subjek saat pengguna tidak memiliki subjek yang terkait dengan profilnya
             instructions.setVisibility(View.VISIBLE);
-            //Hide alphabet scroller on the right side + List of item (indeed, a user can uncheck all his subjects and go back to view his profile)
+            //Sembunyikan alfabet scroller di sisi kanan + daftar item (memang, pengguna dapat Hapus centang semua subjeknya dan kembali untuk melihat profilnya)
             alphabetik.setVisibility(View.GONE);
             listView.setVisibility(View.GONE);
 
         // Alphabetik implementation & ListView population
         } else {
             //Handle visibility
-            instructions.setVisibility(View.GONE); //Hide instructions for adding subjects when the user has no subjects associated with his profile
-            alphabetik.setVisibility(View.VISIBLE); //Show alphabet scroller
-            listView.setVisibility(View.VISIBLE); //Show list of subjects
+            instructions.setVisibility(View.GONE); //Sembunyikan petunjuk untuk menambahkan subjek saat pengguna tidak memiliki subjek yang terkait dengan profilnya
+            alphabetik.setVisibility(View.VISIBLE); //Tunjukkan alphabet scroller
+            listView.setVisibility(View.VISIBLE); //Tunjukkan nama pelajaran
 
             ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, orderedSubjects.first);
             listView.setAdapter(adapter);
 
-            //Set alphabet relevant with the subjects' names
+            //Set alphabet yang relevan dengan nama pelajaran
             alphabetik.setAlphabet(orderedSubjects.second);
 
             alphabetik.onSectionIndexClickListener(new Alphabetik.SectionIndexClickListener() {

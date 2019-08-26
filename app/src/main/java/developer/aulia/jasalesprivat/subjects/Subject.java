@@ -9,7 +9,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
-//In the case of subject the name
+//Nama pelajaran
 public class Subject implements Storable, Parcelable {
     private String id;
     private String name;
@@ -43,8 +43,8 @@ public class Subject implements Storable, Parcelable {
 
     @Override
     public Map<String, Object> marshal() {
-        //the Id must be fetch from the instance,
-        //in firestore document ids aren't in the map
+        //Id harus diambil dari instance,
+        //dalam ID dokumen firestore tidak ada di peta
         Map<String, Object> subject = new HashMap<>();
         subject.put("Name",name);
         return subject;
@@ -72,7 +72,7 @@ public class Subject implements Storable, Parcelable {
     };
 
     /**
-     * Constructor that takes a parcel and construct a populated user object
+     * Constructor yang mengambil parcel dan membangun sebuah objek pengguna
      * @param in parcel
      */
     private Subject(Parcel in) {

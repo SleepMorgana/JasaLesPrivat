@@ -26,15 +26,15 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 public class User extends Observable implements Storable, Parcelable, IUser {
-    //combination of FirebaseUser and user from the `users` collection in firestore
+    //kombinasi FirebaseUser dan pengguna dari `users` pada collection in firestore
     private String username;
     private String email;
     private Role role;
     private String id;
     private Bitmap profile_picture;
-    private Status status; // for tutors
+    private Status status; // untuk pengajar/tutor
     private Map<String,Subject> subjects = new HashMap<>();
-    private List<Object> sessionIds = new ArrayList<>();// just use .toString()
+    private List<Object> sessionIds = new ArrayList<>();// hanya gunakan .toString()
     private List<Session> sessions = new ArrayList<>();
 
 
@@ -49,7 +49,7 @@ public class User extends Observable implements Storable, Parcelable, IUser {
         sessionIds = user.contains("Sessions")? ((List<Object>) user.getData().get("Sessions")): new ArrayList<>();
     }
 
-    public User(String username,String email, Role role,String id, Status status){
+    public User(String username,String email, String address, String phoneNumber, Role role,String id, Status status){
         this.username = username;
         this.email = email;
         this.id = id;
@@ -57,7 +57,7 @@ public class User extends Observable implements Storable, Parcelable, IUser {
         this.status = status;
     }
 
-    //Only used at signIn and signUp time
+    //Hanya digunakan ketika signIn (Masuk) dan signUp (Daftar)
     public User(FirebaseUser user){
         id = user.getUid();
         email = user.getEmail();
@@ -123,6 +123,7 @@ public class User extends Observable implements Storable, Parcelable, IUser {
         return id;
     }
 
+
     @Override
     public String getName() {
         return username;
@@ -162,8 +163,8 @@ public class User extends Observable implements Storable, Parcelable, IUser {
     }
 
     /**
-     * Generates the sorted list of subjects names associated with the user and the corresponding sorted alphabet list in a pair
-     * @return the sorted list of subjects names associated with the user and the corresponding sorted alphabet list in a pair
+     * Menghasilkan daftar diurutkan subjek nama yang terkait dengan pengguna dan daftar alfabet diurutkan sesuai dalam pasangan
+     * @return daftar diurutkan nama subyek yang terkait dengan pengguna dan daftar alfabet diurutkan sesuai dalam pasangan
      */
     public Pair<List<String>, String[]> getOrderedSubjects() {
         Pair<List<String>, String[]> res;
@@ -171,14 +172,14 @@ public class User extends Observable implements Storable, Parcelable, IUser {
         SortedSet<String> ordered_subjects_alphabet = new TreeSet<>();
         String temp_subject_name;
 
-        //Iterate over map values only (no need of the associated keys here)
+        //Iterate atas nilai peta saja (tidak perlu kunci yang terkait di sini)
         for (Subject subject_item: subjects.values()) {
             temp_subject_name = subject_item.getName();
             sorted_subject_names.add(temp_subject_name);
             ordered_subjects_alphabet.add(temp_subject_name.substring(0, 1).toUpperCase());
         }
 
-        //Sorting the list of subjects' name by alphabetical order (case sensitive)
+        //Sortir nama pelajaran berdasarkan urutan huruf (case-sensitive)
         Collections.sort(sorted_subject_names, new Comparator<String>() {
             @Override
             public int compare(String s1, String s2) {
@@ -186,8 +187,8 @@ public class User extends Observable implements Storable, Parcelable, IUser {
             }
         });
 
-        // Convert the ordered_subjects_alphabet tree set to an array (which will be sorted)
-        // ordered_subjects_alphabet.toArray(new String[0]);
+        // mengkonversi ordered_subjects_alphabet tree set ke array (yang akan diurutkan
+
 
         res = new Pair<>(sorted_subject_names, ordered_subjects_alphabet.toArray(new String[0]));
 
@@ -206,7 +207,7 @@ public class User extends Observable implements Storable, Parcelable, IUser {
     }
 
     public Map<String, Object> marshal(){
-        //the Id must be fetch from the instance, in firestore document ids aren't in the map
+        //Id harus diambil dari instance, dalam ID dokumen firestore tidak ada di map
         Map<String, Object> user = new HashMap<>();
         user.put("Username",username);
         user.put("Email",email);
@@ -231,8 +232,8 @@ public class User extends Observable implements Storable, Parcelable, IUser {
         return newMap;
     }
 
-    //Transform the map of maps to a single map
-    //if arg is null returns empty HashMap
+    //Transformasi dari berbagai map menjadi satu peta
+    //apabila arg adalah null returns kosongkan HashMap
     public Map<String,Subject> flatten2(Map<String,Map<String,Object>> map){
         //null check
         if (map==null){
@@ -246,9 +247,9 @@ public class User extends Observable implements Storable, Parcelable, IUser {
     }
 
     /**
-     * describeContents method for a Parcelable class (in this project, such class(es) has(have) no
-     * child classes)
-     * @return 0. Parcelable class(es) in this project has(have) no child classes
+     * metode yang telah diuraikan untuk kelas Parcelable (dalam proyek ini, seperti kelas (es) telah (memiliki) tidak ada
+     * kelas anak)
+     * @return 0. Kelas parcelable (es) dalam proyek ini memiliki (memiliki) tidak ada kelas anak
      */
     @Override
     public int describeContents() {
@@ -256,9 +257,9 @@ public class User extends Observable implements Storable, Parcelable, IUser {
     }
 
     /**
-     * Write an object to a parcel
-     * @param dest The Parcel in which the object should be written
-     * @param flags Additional flags about how the object should be written
+     * Menulis objek ke sebuah paket
+     * @param dest paket di mana objek harus ditulis
+     * @param flags tambahan bendera tentang bagaimana objek harus ditulis
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
@@ -286,8 +287,8 @@ public class User extends Observable implements Storable, Parcelable, IUser {
     };
 
     /**
-     * Constructor that takes a parcel and construct a populated user object
-     * @param in parcel
+     * Konstruktor yang mengambil paket dan membangun sebuah objek pengguna dihuni
+     * @param in Parcel
      */
     private User(Parcel in) {
         username = in.readString();
@@ -301,9 +302,9 @@ public class User extends Observable implements Storable, Parcelable, IUser {
     }
 
     /**
-     * Retrieve the first next nb_sessions upcoming sessions' dates for a user
-     * @param nb_session number of sessions' dates to retrieve
-     * @return the first next nb_sessions upcoming sessions' dates for a user
+     * Ambil pertama berikutnya nb_sessions sesi mendatang ' tanggal untuk pengguna
+     * @param nb_session jumlah sesi ' tanggal untuk mengambil
+     * @return yang pertama berikutnya nb_sessions sesi mendatang ' tanggal untuk pengguna
      */
     public List<Date> getNUpcomingSessionDates(int nb_session) {
         List<Date> dates = new ArrayList<>();
@@ -311,7 +312,7 @@ public class User extends Observable implements Storable, Parcelable, IUser {
         List<Date> session_dates;
         int counter = 0;
 
-        //Transform list of sesions to list of dates occuring in the future (because multiple dates possible for each session)
+        //Transform daftar sesions ke daftar tanggal yang terjadi di masa depan (karena beberapa tanggal mungkin untuk setiap sesi)
         for (Session session:sessions) {
 
             if (session.getStatus().equals(Status.ACCEPTED)) {
@@ -326,10 +327,10 @@ public class User extends Observable implements Storable, Parcelable, IUser {
             }
         }
 
-        // Order list of sessions' dates(in ascending order)
+        // Order daftar les privat berdasarkan tanggal (secara ascending)
         Collections.sort(dates);
 
-        //Retrive first N dates
+        //ambil tanggal N pertama
         for (Date d:dates) {
             nDates.add(d);
 
@@ -343,7 +344,7 @@ public class User extends Observable implements Storable, Parcelable, IUser {
         return nDates;
     }
 
-    //Returns list of accepted sessions
+    //Mengembalikan daftar sesi yang diterima
     public List<Session> getAcceptedSessions(){
         List<Session> acceptedSessions = new ArrayList<>();
         for (Session session : sessions){

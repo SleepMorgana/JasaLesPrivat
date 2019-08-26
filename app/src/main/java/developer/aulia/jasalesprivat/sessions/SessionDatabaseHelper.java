@@ -18,7 +18,7 @@ public class SessionDatabaseHelper extends DatabaseHelper<Session> {
     @Override
     public void upsert(Session obj, OnSuccessListener<Void> successes, OnFailureListener failureListener) {
         if (obj.getId() == null || obj.getId().equals("")){
-            //create id
+            //buat id
             UUID uuid = UUID.randomUUID();
             obj.setId(uuid.toString());
         }

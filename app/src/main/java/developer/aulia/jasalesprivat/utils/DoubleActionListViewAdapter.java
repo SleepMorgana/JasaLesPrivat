@@ -12,7 +12,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.List;
 
 public class DoubleActionListViewAdapter extends ListableViewAdapter {
-    private OnSuccessListener action1;// button action is successful
+    private OnSuccessListener action1;// Tombol action sukses merespon
     private OnSuccessListener action2;
     private boolean isAdmin;
 
@@ -28,7 +28,7 @@ public class DoubleActionListViewAdapter extends ListableViewAdapter {
         if (data.size()>0) {
             if (data.get(0) instanceof User && isAdmin)
                 return new UserItemView(context, (User) data.get(i), R.layout.user_admin_item_layout, action1, action2).getView();
-            //add other cases
+            //Menambahkan cases lain
             return null;
         }
         return null;

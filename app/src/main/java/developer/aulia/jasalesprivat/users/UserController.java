@@ -11,7 +11,7 @@ public class UserController {
 
     public void registerUserObserver(Observer observer) throws RuntimeException {
         if (observer == null) {
-            throw new RuntimeException("Couldn't register observer for the ");
+            throw new RuntimeException("Tidak bisa mendaftarkan pengamat ke ");
         }
         user.addObserver(observer);
     }

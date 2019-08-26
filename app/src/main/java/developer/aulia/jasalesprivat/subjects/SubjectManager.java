@@ -9,7 +9,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 public class SubjectManager {
     private static final SubjectDatabaseHelper db = new SubjectDatabaseHelper();
-    //create
+    //Buat nama pelajaran baru
     public static void addNewSubject(final Subject subject, @NonNull final OnSuccessListener<Void> successListener, @NonNull final OnFailureListener failureListener){
         if (subject==null){
             failureListener.onFailure(new NullPointerException("subject instance is null"));
@@ -19,22 +19,22 @@ public class SubjectManager {
         retrieveSubjectsByName(subject.getName().trim(), new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                //check if doc exists
+                //cek apabila dokumen ada
 
                 if (queryDocumentSnapshots.size() > 0) {
-                    //exists
+                    //dokumen ada
                     failureListener.onFailure(new UnsupportedOperationException("subject with the same name already exists"));
                 } else {
                     getDbInstance().upsert(subject, new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            //add code here if the method needs expanding
+
                             successListener.onSuccess(aVoid);
                         }
                     }, new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            //add code here
+
                             failureListener.onFailure(e);
                         }
                     });
@@ -58,7 +58,7 @@ public class SubjectManager {
         getDbInstance().deleteById(subject.getId(), new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                //add user batch operations
+                //menambahkan operasi batch pengguna
                 successListener.onSuccess(aVoid);
             }
         }, new OnFailureListener() {

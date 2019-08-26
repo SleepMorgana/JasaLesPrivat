@@ -18,11 +18,13 @@ import developer.aulia.jasalesprivat.R;
 import developer.aulia.jasalesprivat.subjects.Subject;
 import developer.aulia.jasalesprivat.users.UserManager;
 import developer.aulia.jasalesprivat.utils.Util;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 public class CreateSubjectActivity extends AppCompatActivity {
     private Context mContext;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,10 +32,10 @@ public class CreateSubjectActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         final Subject subject = intent.getParcelableExtra(AdminMainActivity.mItemSelected);
-        //check if subject was passed from previous activity
+        //cek apabila nama pelajaran sudah melewati activity sebelumnya
         //true: edit activity
-        //false: create subject activity
-        if (subject != null){
+        //false: buat activity nama pelajaran
+        if (subject != null) {
             //edit
             initEdit();
             final EditText ed1 = (EditText) findViewById(R.id.admin_edit_subject_edit);
@@ -44,26 +46,27 @@ public class CreateSubjectActivity extends AppCompatActivity {
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final String name = (ed1.getText()!=null)? ed1.getText().toString().trim() : "";
-                    Log.d(Util.TAG,"Edit button");
+                    final String name = (ed1.getText() != null) ? ed1.getText().toString().trim() : "";
+                    Log.d(Util.TAG, "Edit button");
                     if (name.equals("")) {
-                        Util.printToast(mContext, "Missing subject name", Toast.LENGTH_LONG);
+                        Util.printToast(mContext, "Nama subjek tidak ditemukan", Toast.LENGTH_LONG);
                         return;
                     }
-                    //save the edited subject
+                    //simpan nama pelajaran yang sudah diedit
                     subject.setName(name);
                     UserManager.updateSubject(subject, new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             //OK
-                            Util.printToast(mContext, "Edit was successful!", Toast.LENGTH_SHORT);
+                            Util.printToast(mContext, "Edit pelajaran berhasil", Toast.LENGTH_SHORT);
                             finish();
+
                         }
                     }, new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             //error
-                            Util.printToast(mContext, String.format("There were issues with the editing: %s",e.getMessage()), Toast.LENGTH_SHORT);
+                            Util.printToast(mContext, String.format("Adanya masalah ketika mengedit pelajaran: %s", e.getMessage()), Toast.LENGTH_SHORT);
                         }
                     });
                 }
@@ -72,28 +75,29 @@ public class CreateSubjectActivity extends AppCompatActivity {
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final String name = (ed1.getText()!=null)? ed1.getText().toString().trim() : "";
+                    final String name = (ed1.getText() != null) ? ed1.getText().toString().trim() : "";
                     if (name.equals("")) {
-                        Util.printToast(mContext, "Missing subject name", Toast.LENGTH_LONG);
+                        Util.printToast(mContext, "Nama pelajaran tidak ditemukan", Toast.LENGTH_LONG);
                         return;
                     }
-                    Util.makeDialog("Delete item", "You are about to delete the selected item.",
+                    Util.makeDialog("Delete item", "Anda akan menghapus pelajaran ini.",
                             "Delete", "Cancel", mContext, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    //delete subject
+                                    //hapus nama pelajaran yang sudah diedit
                                     UserManager.deleteSubject(subject, new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             //OK
-                                            Util.printToast(mContext, "Deletion was successful!", Toast.LENGTH_SHORT);
+                                            Util.printToast(mContext, "Pelajaran berhasil dihapus", Toast.LENGTH_SHORT);
                                             finish();
+
                                         }
                                     }, new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
                                             //error
-                                            Util.printToast(mContext, "There were issues with deleting the subject", Toast.LENGTH_SHORT);
+                                            Util.printToast(mContext, "Adanya masalah ketika menghapus pelajaran", Toast.LENGTH_SHORT);
                                         }
                                     });
                                     dialog.dismiss();
@@ -101,7 +105,7 @@ public class CreateSubjectActivity extends AppCompatActivity {
                             }, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    //cancel deletion
+                                    //batalkan hapus nama pelajaran
                                     dialog.dismiss();
                                     return;
                                 }
@@ -110,8 +114,8 @@ public class CreateSubjectActivity extends AppCompatActivity {
                 }
             });
 
-        }else {
-            //create
+        } else {
+            //buat pelajaran baru
             initCreate();
             final EditText ed1 = (EditText) findViewById(R.id.admin_create_subject_edit);
             FloatingActionButton save = (FloatingActionButton) findViewById(R.id.admin_create_subject_button);
@@ -119,26 +123,26 @@ public class CreateSubjectActivity extends AppCompatActivity {
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final String name = (ed1.getText()!=null)? ed1.getText().toString().trim() : "";
+                    final String name = (ed1.getText() != null) ? ed1.getText().toString().trim() : "";
                     if (name.equals("")) {
-                        Util.printToast(mContext, "Missing subject name", Toast.LENGTH_LONG);
+                        Util.printToast(mContext, "Nama pelajaran tidak ditemukan", Toast.LENGTH_LONG);
                         return;
                     }
-                    //save the new subject
+                    //simpan pelajaran baru
                     Subject subject1 = new Subject(name);
-                    Log.d(Util.TAG,"Save button");
+                    Log.d(Util.TAG, "Save button");
                     UserManager.createSubject(subject1, new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             //OK
-                            Util.printToast(mContext, "New subject was added successfully!", Toast.LENGTH_SHORT);
+                            Util.printToast(mContext, "Pelajaran baru berhasil ditambahkan", Toast.LENGTH_SHORT);
                             finish();
                         }
                     }, new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             //error
-                            Util.printToast(mContext, String.format("There were issues with the subject creation: %s", e.getMessage()), Toast.LENGTH_SHORT);
+                            Util.printToast(mContext, String.format("Adanya masalah ketika membuat pelajaran: %s", e.getMessage()), Toast.LENGTH_SHORT);
                         }
                     });
                 }
@@ -146,21 +150,21 @@ public class CreateSubjectActivity extends AppCompatActivity {
         }
     }
 
-    private void initCreate(){
+    private void initCreate() {
         setContentView(R.layout.activity_admin_add_subject);
         setToolbar();
     }
 
-    private void initEdit(){
+    private void initEdit() {
         setContentView(R.layout.activity_admin_edit_subject);
         setToolbar();
     }
 
-    private void setToolbar(){
+    private void setToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
         setSupportActionBar(toolbar);
-        // add back arrow to toolbar
-        if (getSupportActionBar() != null){
+        // tambahkan back arrow pada toolbar
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }

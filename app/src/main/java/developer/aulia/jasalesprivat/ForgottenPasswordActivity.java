@@ -24,10 +24,10 @@ public class ForgottenPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgotten_password);
 
-        //Enable the Up button
+        //Aktifkan tombol up
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar(); // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar(); // mendapat dukungan ActionBar sesuai dengan Toolbar ini.
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setDisplayShowHomeEnabled(true);
@@ -35,7 +35,7 @@ public class ForgottenPasswordActivity extends AppCompatActivity {
 
 
         reset_psswd_button = findViewById(R.id.reset_psswd_id);
-        mAuth = FirebaseAuth.getInstance(); //Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance(); //Inisialisasi Firebase Auth
         final Context context = this;
         reset_psswd_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,9 +53,9 @@ public class ForgottenPasswordActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
+            // Merespon ke action bar di tombol Up/Home
             case android.R.id.home:
-                finish(); // close this activity and return to preview activity (if there is any)
+                finish(); // tutup activity dan kembali ke activity sebelumnya (jika ada)
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

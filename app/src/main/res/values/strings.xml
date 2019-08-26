@@ -66,7 +66,9 @@
     <string name="requested_sessions_txt">Requested sessions</string>
     <string name="date_txt">Date</string>
     <string name="no_upcoming_sessions_txt">You have no upcoming sessions</string>
-    <string name="upcoming_sessions_txt">Dates of your next upcoming sessions (up to five):</string>
+    <string name="no_upcoming_sessions_txt2">The tutor doesn\'t have any upcoming sessions</string>
+    <string name="upcoming_sessions_txt">Dates of your next upcoming sessions:</string>
+    <string name="upcoming_sessions_txt2">Recent tutor schedule</string>
     <string name="send">Send</string>
     <string name="select_request_label">Select session request to view its details</string>
     <string name="conversation_list_label">Select a user to start a conversation</string>

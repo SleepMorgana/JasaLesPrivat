@@ -51,69 +51,53 @@ public class SearchTutorsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_tutors);
 
-        Button search1 = (Button) findViewById(R.id.search_tutors_option1); //Search button to search for tutors based on the student's learning needs
-        Button search2_custom = (Button) findViewById(R.id.search_tutors_option2); //Search button to search for tutors on the student's selected subjects
+        Button search1 = (Button) findViewById(R.id.search_tutors_option1); //Tombol pencarian untuk mencari tutor berdasarkan kebutuhan belajar siswa
+        Button search2_custom = (Button) findViewById(R.id.search_tutors_option2); //Tombol Cari untuk mencari tutor pada subyek yang dipilih siswa
 
-        //Enable the Up button
+        //Aktifkan fungsi tombol up
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar(); // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar(); // Dapatkan ActionBar dukungan yang sesuai dengan Toolbar ini
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setDisplayShowHomeEnabled(true);
         }
 
-        //Current user
+        //User yang login saat ini
         final User user = UserManager.getUserInstance().getUser();
-        // ImageView in your Activity
-        final ImageView imageView = (ImageView) findViewById(R.id.listview_image);
-
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("images/profile_picture_" +
-                user.getId());
 
 
 
-        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(getApplicationContext()).load(uri.toString()).into(imageView);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Log.d(Util.TAG, "Not found");
-            }
-        });
 
-        // Query all subjects available within the app
+        // Query semua mata pelajaran yang tersedia dalam aplikasi
         SubjectManager.listSubjects(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                final ArrayList<Subject> all_app_subjects = new ArrayList<>(); //List of all subjects available in the database
+                final ArrayList<Subject> all_app_subjects = new ArrayList<>(); //Daftar nama pelajaran yang tersedia pada database
                 for (DocumentSnapshot snapshot : queryDocumentSnapshots){
                     Subject subject = new Subject(snapshot);
                     all_app_subjects.add(subject);
 
                 }
 
-                //Handle the case where there is no subjects available within the app yet
+                //Menangani kasus di mana tidak ada pelajaran yang tersedia pada aplikasi
                 if (all_app_subjects.size() == 0) {
                     Util.printToast(SearchTutorsActivity.this,"There is no subject available yet. Try again later or contact the administrator", Toast.LENGTH_LONG);
                 }
 
                 checked_subjects = user.getOrderedSubjects().first;
 
-                /* Populating two maps in a pair:
-                   - First map (first elt in pair): Mapping subject names with the corresponding subject object.
-                     Precondition: Subject names in the database are unique
-                   - Second sorted map (second elt in pair): Mapping subject names with a boolean indicating whether the
-                     subject designated by its names is associated with the current user or not
-                     Precondition: Subject names in the database are unique
-                      NB: Sorted map because the list of all subjects needs to be sorted for the alphabet scroller to work*/
+                /* Mempopulasikan dua peta dalam sepasang:
+                   -Pertama peta (pertama ELT berpasangan): memetakan nama subjek ke objek Subject yang sesuai.
+                     Prakondisi: nama subjek dalam basis data unik
+                   -Kedua diurutkan peta (kedua ELT dalam pasangan): pemetaan nama subjek dengan Boolean menunjukkan apakah
+                     Nama yang terkait dengan pengguna saat ini atau tidak
+                     Prakondisi: nama subjek dalam basis data unik
+                      NB: diurutkan peta karena daftar semua subyek perlu diurutkan untuk alfabet scroller bekerja */
                 pairOfMapSubjects = Util.populateMappingUserSubject(checked_subjects, all_app_subjects);
 
 
-                // Alphabetik implementation
+                // implementasi Alphabetik
                 Alphabetik alphabetik = findViewById(R.id.alphSectionIndex);
                 final ListView listView=(ListView)findViewById(R.id.listView);
                 adapter = new CheckboxArrayAdapter(SearchTutorsActivity.this,
@@ -123,7 +107,7 @@ public class SearchTutorsActivity extends AppCompatActivity {
                 listView.setItemsCanFocus(false);
                 listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE); //List allows multiple choices
 
-                //Set alphabet relevant with the subjects' names
+                //Set alphabet yang relevan dengan nama pelajaran
                 String[] alphabet = Util.getCustomAlphabetSet(pairOfMapSubjects.second.keySet());
                 alphabetik.setAlphabet(alphabet);
 
@@ -140,19 +124,19 @@ public class SearchTutorsActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Util.printToast(SearchTutorsActivity.this,"Failing to get the list subjects available within the application. Try again later or contact the administrator",Toast.LENGTH_LONG);
-                Log.i(Util.TAG, e.getMessage()); //For debugging
+                Log.i(Util.TAG, e.getMessage());
             }
         });
 
-        //Search for tutors
+        //Pencarian tutor
         search1.setOnClickListener(new View.OnClickListener() { //Search option 1
             @Override
             public void onClick(View v) {
-                //User search criteria = subjects he/she listed as learning needs
+                //Kriteria pencarian pengguna = nama pelajaran yang ia Daftarkan sebagai kebutuhan belajar
                 List<String> subjects_id_criteria = new ArrayList<>();
                 subjects_id_criteria.addAll(user.getSubjects().keySet());
 
-                // Go to next activity where
+                // Pergi ke activity selanjutnya dimana
                 Intent intent = new Intent(SearchTutorsActivity.this, MatchedTutorsActivity.class);
                 intent.putStringArrayListExtra("subjects_id", (ArrayList<String>) subjects_id_criteria);
                 startActivity(intent);
@@ -162,7 +146,7 @@ public class SearchTutorsActivity extends AppCompatActivity {
         search2_custom.setOnClickListener(new View.OnClickListener() { //Search opton 1
             @Override
             public void onClick(View v) {
-                //User search criteria = subjects he/she selected in this activity
+                //Kriteria pencarian pengguna = nama pelajaran yang ia pilih di activity search
                 Intent intent = new Intent(SearchTutorsActivity.this, MatchedTutorsActivity.class);
                 intent.putStringArrayListExtra("subjects_id", (ArrayList<String>)
                         getSubjectsId(pairOfMapSubjects.first, adapter.getSubject_map()));
@@ -174,9 +158,9 @@ public class SearchTutorsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
+            // Merespon ke tombol Up/Home di action bar
             case android.R.id.home:
-                finish(); // close this activity and return to preview activity (if there is any)
+                finish(); // tutup activity and kembali ke activity sebelumnya (jika ada)
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

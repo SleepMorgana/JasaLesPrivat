@@ -21,12 +21,8 @@ import android.widget.TextView;
 import com.alphabetik.Alphabetik;
 import com.bumptech.glide.Glide;
 
-import developer.aulia.jasalesprivat.AddEventActivity;
-import developer.aulia.jasalesprivat.ChatroomActivity;
-import developer.aulia.jasalesprivat.chat.ChatMessageRecyclerAdapter;
 import developer.aulia.jasalesprivat.R;
 import developer.aulia.jasalesprivat.RequestSessionActivity;
-import developer.aulia.jasalesprivat.ScheduleSessionActivity;
 import developer.aulia.jasalesprivat.users.User;
 import developer.aulia.jasalesprivat.utils.Util;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -45,26 +41,26 @@ public class ViewTutorProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_tutor_profile);
 
-        //Enable the Up button
+        //Aktifkan tombol up
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar(); // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar(); // Dapatkan ActionBar dukungan yang sesuai dengan Toolbar ini
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
             ab.setDisplayShowHomeEnabled(true);
         }
 
-        //Retrieve data sent from previous activity (i.e. tutor user selected in previous activity in this case)
+        //Mengambil data yang dikirim dari activity sebelumnya (yaitu tutor pengguna yang dipilih dari activity sebelumnya)
         final User selected_tutor = Objects.requireNonNull(getIntent().getExtras()).getParcelable("selected_tutor");
 
-        //Retrieve and display the tutor's profile picture (if any) + display his username
+        //Mengambil dan menampilkan foto profil tutor (jika ada) + menampilkan username
         updateUserIdentity(selected_tutor);
 
-        //Render the tutor's subjects
+        //Merender daftar pelajaran pada tutor
         renderSubjects(selected_tutor);
 
 
-        Button chatButton = findViewById(R.id.chat_button_id);
+        /*Button chatButton = findViewById(R.id.chat_button_id);
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,22 +69,21 @@ public class ViewTutorProfileActivity extends AppCompatActivity {
                 intent.putExtra(AddEventActivity.mTutorFlag,selected_tutor);
                 startActivity(intent);
             }
-        });
+        });*/
 
-        //request session button, goes to session activity
+        //mulai activityy request session
         Button sessionButton = findViewById(R.id.session_request_button_id);
         sessionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //start chat activity
+                //mulai activity request session
                 Intent intent = new Intent(mContext, RequestSessionActivity.class);
                 intent.putExtra(RequestSessionActivity.mTutorFlag,selected_tutor);
                 startActivity(intent);
             }
         });
 
-        //request check schedule, goes to schedule activity
-        Button checkscheduleButton = findViewById(R.id.session_check_activity);
+        /*Button checkscheduleButton = findViewById(R.id.session_check_activity);
         checkscheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,15 +92,15 @@ public class ViewTutorProfileActivity extends AppCompatActivity {
                 intent.putExtra(RequestSessionActivity.mTutorFlag,selected_tutor);
                 startActivity(intent);
             }
-        });
+        });*/
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
+            // Merespon ke tombol Up/Home di action bar
             case android.R.id.home:
-                finish(); // close this activity and return to preview activity (if there is any)
+                finish(); // tutup activity and kembali ke activity sebelumnya (jika ada)
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -113,19 +108,19 @@ public class ViewTutorProfileActivity extends AppCompatActivity {
     }
 
     /**
-     * Render the tutor's identity (i.e. username, profile picture)
-     * NB: The user's email is not displayed here for privacy purposes. A student can communicate with a
-     * tutor using the messaging system
+     * Render identitas tutor (yaitu username, profil gambar)
+     * NB: email pengguna tidak ditampilkan di sini untuk tujuan privasi. Seorang siswa dapat berkomunikasi dengan
+     * tutor menggunakan sistem pesan
      * @param tutor_user
      */
     private void updateUserIdentity(User tutor_user) {
-        /*By default the profile picture is a gender-neutral avatar, unless he/she has uploaded his/her
-        own profile picture which must then be displayed instead of the default avatar */
-        // Reference to an image file in Cloud Storage
+        /* Secara default, foto profil adalah avatar netral gender, kecuali jika ia telah mengunggah
+        gambar profil sendiri yang kemudian harus ditampilkan bukan default avatar */
+        //Referensi ke file gambar di Cloud Storage
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("images/profile_picture_" +
                 tutor_user.getId());
 
-        // ImageView in your Activity
+        // ImageView digunakan untuk foto tutor/pengajar
         final ImageView imageView = (ImageView) findViewById(R.id.profile_picture_view_id);
 
         storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -140,26 +135,26 @@ public class ViewTutorProfileActivity extends AppCompatActivity {
             }
         });
 
-        //Update the layout with the logged-in user's info
+        //Perbarui layout dengan info pengguna yang masuk pada
         //Username
         TextView text_view = findViewById(R.id.username_profile_id);
         text_view.setText(tutor_user.getUsername());
     }
 
     /**
-     * Render the current user's list of subjects (tutoring subjects for a tutor)
-     * @param populated_user tutor user
+     * Render daftar pengguna saat ini berdasarkan kebutuhuan pelajaran (daftar pelajaran yang dapat diajar oleh tutor)
+     * @param populated_user pengguna tutor/pengajar
      */
     private void renderSubjects(User populated_user) {
         final ListView listView = findViewById(R.id.listView); //Listview implementation, with SORTED list of DATA
         Alphabetik alphabetik = findViewById(R.id.alphSectionIndex);
-        //Alphabetically ordered list of learning needs (student) or tutoring subjects (tutors)
+        //Daftar alfabetis urutan kebutuhan belajar (siswa) atau Les mata pelajaran (tutor)
         final Pair<List<String>, String[]> orderedSubjects = populated_user.getOrderedSubjects();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, orderedSubjects.first);
         listView.setAdapter(adapter);
 
-        //Set alphabet relevant with the subjects' names
+        //Set alphabet yang relevan dengan nama pelajaran
         alphabetik.setAlphabet(orderedSubjects.second);
 
         alphabetik.onSectionIndexClickListener(new Alphabetik.SectionIndexClickListener() {
@@ -167,7 +162,7 @@ public class ViewTutorProfileActivity extends AppCompatActivity {
             public void onItemClick(View view, int position, String character) {
                 String info = " Position = " + position + " Char = " + character;
                 Log.i("View: ", view + "," + info);
-                //Toast.makeText(getBaseContext(), info, Toast.LENGTH_SHORT).show();
+
                 listView.smoothScrollToPosition(Util.getPositionFromData(character, orderedSubjects.first));
             }
         });
